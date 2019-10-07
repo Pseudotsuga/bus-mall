@@ -21,7 +21,6 @@ var testingImagesArray = [
   ['usb', './img/usb.gif'],
   ['watering can', './img/water-can.jpg'],
   ['wine glass', './img/wine-glass.jpg']
-
 ];
 // var currentImagesDisplayed = [];
 // var totalImagesSeenInitial = 0;
@@ -69,6 +68,20 @@ function randomImageDisplayer(){
   rightImageTag.src = ProductImageConstructor.allImages[rightIndexCurrent].productImageFilePath;
 }
 
+function imageVoteTracker(event){
+  var targetID = event.target.id;
+  if (targetID === leftImageTag.id){
+    ProductImageConstructor.allImages[leftIndexCurrent].totalVotes++;
+  } else if (targetID === middleImageTag.id){
+    ProductImageConstructor.allImages[middleIndexCurrent].totalVotes++;
+  } else if (targetID === rightImageTag.id){
+    ProductImageConstructor.allImages[rightIndexCurrent].totalVotes++;
+  } else {
+    alert('Please click on a specific image.');
+  }
+  randomImageDisplayer();
+}
+
 for(var i = 0; i < testingImagesArray.length; i++){
   new ProductImageConstructor(testingImagesArray[i][0],testingImagesArray[i][1]);
 }
@@ -95,6 +108,7 @@ for(var i = 0; i < testingImagesArray.length; i++){
 // new ImageConstructor ('bob', 'image');
 // new ImageConstructor ('jane', 'image2');
 // console.log(ImageConstructor.allImages);
-
-imageAreaTag.addEventListener('click', randomImageDisplayer, false);
+randomImagePicker();
+randomImageDisplayer();
+imageAreaTag.addEventListener('click', imageVoteTracker, false);
 
