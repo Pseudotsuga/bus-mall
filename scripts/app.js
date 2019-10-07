@@ -6,7 +6,10 @@
 var leftImageTag = document.getElementById('leftImage');
 var rightImageTag = document.getElementById('rightImage');
 var leftIndexCurrent = null;
+var middleIndexCurrent = null;
+var rightIndexCurrent = null;
 ProductImageConstructor.allImages = [];
+var max = ProductImageConstructor.allImages.length;
 function ProductImageConstructor(productName, productImageFilePath){
   this.productName = productName;
   this.productImageFilePath = productImageFilePath;
@@ -17,25 +20,63 @@ function ProductImageConstructor(productName, productImageFilePath){
 }
 
 function randomImagePicker(){
-  var max = ProductImageConstructor.allImages.length;
-  var leftIndexRandom = Math.floor(Math.random() * max);
-  while(leftIndexRandom === leftIndexCurrent){
-    leftIndexRandom = Math.floor(Math.random() * max);
+  debugger;
+  do {
+    var leftIndexRandom = Math.floor(Math.random() * max);
   }
+  while(leftIndexRandom === leftIndexCurrent);
   leftIndexCurrent = leftIndexRandom;
+  do {
+    var middleIndexRandom =  Math.floor(Math.random() * max);
+  }
+  while (middleIndexRandom === middleIndexCurrent || middleIndexRandom === leftIndexCurrent)
+  middleIndexCurrent = middleIndexRandom;
+  do {var rightIndexRandom = Math.floor(Math.random() * max);
+  }
+  while (rightIndexRandom === rightIndexCurrent || rightIndexRandom === middleIndexCurrent || rightIndexRandom === leftIndexCurrent);
+  rightIndexCurrent = rightIndexRandom;
 }
 new ProductImageConstructor('whatever', 'hello1');
 new ProductImageConstructor('whatever', 'hello2');
+new ProductImageConstructor('whatever', 'hello3');
 
-console.log(leftIndexCurrent);
+console.log('left', leftIndexCurrent);
+console.log('middle', middleIndexCurrent);
+console.log('right', rightIndexCurrent);
+console.log('endtest');
 randomImagePicker();
-console.log(leftIndexCurrent);
+console.log('left', leftIndexCurrent);
+console.log('middle', middleIndexCurrent);
+console.log('right', rightIndexCurrent);
+console.log('endtest');
 
 randomImagePicker();
-console.log(leftIndexCurrent);
+console.log('left', leftIndexCurrent);
+console.log('middle', middleIndexCurrent);
+console.log('right', rightIndexCurrent);
+console.log('endtest');
 
 randomImagePicker();
-console.log(leftIndexCurrent);
+console.log('left', leftIndexCurrent);
+console.log('middle', middleIndexCurrent);
+console.log('right', rightIndexCurrent);
+console.log('endtest');
+
+randomImagePicker();
+console.log('left', leftIndexCurrent);
+console.log('middle', middleIndexCurrent);
+console.log('right', rightIndexCurrent);
+console.log('endtest');
+randomImagePicker();
+console.log('left', leftIndexCurrent);
+console.log('middle', middleIndexCurrent);
+console.log('right', rightIndexCurrent);
+console.log('endtest');
+randomImagePicker();
+console.log('left', leftIndexCurrent);
+console.log('middle', middleIndexCurrent);
+console.log('right', rightIndexCurrent);
+console.log('endtest');
 
 function renderNewImages(leftIndex, rightIndex){
   leftImageTag.src = ProductImageConstructor.allImages[leftIndex][1];
