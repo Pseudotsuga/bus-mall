@@ -33,10 +33,11 @@ var leftIndexCurrent = null;
 var middleIndexCurrent = null;
 var rightIndexCurrent = null;
 ProductImageConstructor.allImages = [];
+
 function ProductImageConstructor(productName, productImageFilePath){
   this.productName = productName;
   this.productImageFilePath = productImageFilePath;
-  //   this.totalVotes = 0;
+  this.totalVotes = 0;
   //   this.timesShown = 0;
 
   ProductImageConstructor.allImages.push(this);
