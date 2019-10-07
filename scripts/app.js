@@ -3,7 +3,9 @@
 // var imagesArray = [];
 // var currentImagesDisplayed = [];
 // var totalImagesSeenInitial = 0;
+var imageAreaTag = document.getElementById('imageArea');
 var leftImageTag = document.getElementById('leftImage');
+var middleImageTag = document.getElementById('middleImage');
 var rightImageTag = document.getElementById('rightImage');
 var leftIndexCurrent = null;
 var middleIndexCurrent = null;
@@ -36,50 +38,12 @@ function randomImagePicker(){
     rightIndexRandom = Math.floor(Math.random() * max);
   }
   rightIndexCurrent = rightIndexRandom;
+  console.log(leftIndexCurrent, middleIndexCurrent, rightIndexCurrent);
 }
 new ProductImageConstructor('whatever', 'hello1');
 new ProductImageConstructor('whatever', 'hello2');
 new ProductImageConstructor('whatever', 'hello3');
 new ProductImageConstructor('whatever', 'hello4');
-
-console.log('left', leftIndexCurrent);
-console.log('middle', middleIndexCurrent);
-console.log('right', rightIndexCurrent);
-console.log('endtest');
-randomImagePicker();
-
-console.log('left', leftIndexCurrent);
-console.log('middle', middleIndexCurrent);
-console.log('right', rightIndexCurrent);
-console.log('endtest');
-
-randomImagePicker();
-console.log('left', leftIndexCurrent);
-console.log('middle', middleIndexCurrent);
-console.log('right', rightIndexCurrent);
-console.log('endtest');
-
-randomImagePicker();
-console.log('left', leftIndexCurrent);
-console.log('middle', middleIndexCurrent);
-console.log('right', rightIndexCurrent);
-console.log('endtest');
-
-randomImagePicker();
-console.log('left', leftIndexCurrent);
-console.log('middle', middleIndexCurrent);
-console.log('right', rightIndexCurrent);
-console.log('endtest');
-randomImagePicker();
-console.log('left', leftIndexCurrent);
-console.log('middle', middleIndexCurrent);
-console.log('right', rightIndexCurrent);
-console.log('endtest');
-randomImagePicker();
-console.log('left', leftIndexCurrent);
-console.log('middle', middleIndexCurrent);
-console.log('right', rightIndexCurrent);
-console.log('endtest');
 
 // function renderNewImages(leftIndex, rightIndex){
 //   leftImageTag.src = ProductImageConstructor.allImages[leftIndex][1];
@@ -105,5 +69,5 @@ console.log('endtest');
 // new ImageConstructor ('jane', 'image2');
 // console.log(ImageConstructor.allImages);
 
-// leftImageTag.addEventListener('click', imageClickEventListener, false);
-// rightImageTag.addEventListener('click', imageClickEventListener, false);
+imageAreaTag.addEventListener('click', randomImagePicker, false);
+
