@@ -9,40 +9,11 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <h1>Cool Pics from UnSplash</h1>
-  <div id="imageArea">
-    <p>Content Target</p>
+  <main id="imageArea">
     <img src="" alt="" id="leftImage">
     <img src="" alt="" id="middleImage">
     <img src="" alt="" id="rightImage">
-  </div>
-  <!-- Problem Domain
-  Presented with Images
-  User clicks on one of the Images
-  Another set of images are displayed
-  System tracks number of times the image is clicked
-  User clicks and sees x number of images... system stops generating images
-
-  App Flow
-  Random Number Generator
-    Function to display image from set based off of random number generation
-  User Clicks on Images
-    Event handler to handle click Event
-    Counter to track clicks 
-    Event handler firesL
-     Check if total clicks is less than or equal to stop condition
-      If so disable voting
-      If not Track which image was clicked
-      Update the clicked images count of how many times it was clicked
-      Update both images count of times shown 
-      Randomly select another two images to display
-        Verify that Images are the same
-  
-  HTML 
-    Start out with two default images
-    Give them IDs so we can select them
-    Instructions -->
-
+  </main>
 </body>
 <script src="./scripts/app.js"></script>
 </html>
