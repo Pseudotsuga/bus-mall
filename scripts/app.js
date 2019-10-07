@@ -22,7 +22,7 @@ var testingImagesArray = [
   ['watering can', './img/water-can.jpg'],
   ['wine glass', './img/wine-glass.jpg']
 ];
-var totalImageRoundsSeenCurrent = 1;
+var totalImageRoundsSeenCurrent = 0;
 var totalImageRoundsSeenFinish = 25;
 var imageAreaTag = document.getElementById('imageArea');
 var leftImageTag = document.getElementById('leftImage');
@@ -64,30 +64,31 @@ function randomImagePicker(){
 function randomImageDisplayer(){
   randomImagePicker();
   leftImageTag.src = ProductImageConstructor.allImages[leftIndexCurrent].productImageFilePath;
+  ProductImageConstructor.allImages[leftIndexCurrent].timesShown++;
+
   middleImageTag.src = ProductImageConstructor.allImages[middleIndexCurrent].productImageFilePath;
+  ProductImageConstructor.allImages[middleIndexCurrent].timesShown++;
+
   rightImageTag.src = ProductImageConstructor.allImages[rightIndexCurrent].productImageFilePath;
+  ProductImageConstructor.allImages[rightIndexCurrent].timesShown++;
+
 }
 
-function finishImageSelectionCheck(){
-  if (totalImageRoundsSeenCurrent === totalImageRoundsSeenFinish){
-    leftImageTag.remove();
-    middleImageTag.remove();
-    rightImageTag.remove();
-    
-    var orderedListNode = document.createElement('ol');
-    imageAreaTag.appendChild(orderedListNode);
+function finishImageSelection(){
+  imageAreaTag.removeEventListener('click', imageVoteTracker);
+  leftImageTag.remove();
+  middleImageTag.remove();
+  rightImageTag.remove();
 
-    for(var i = 0; i < ProductImageConstructor.allImages.length; i++){
-      var listItemNode = document.createElement('li');
-      listItemNode.textContent = `${ProductImageConstructor.allImages[i][0]} was selected:`
-      orderedListNode.appendChild(listItemNode);
+  var orderedListNode = document.createElement('ol');
+  imageAreaTag.appendChild(orderedListNode);
 
-      var tableHeadingNode = document.createElement('th');
-      tableHeadingNode.setAttribute('scope', 'row');
-      tableHeadingNode.textContent(`${ProductImageConstructor.allImages[i].productName}`);
-    }
+  for(var i = 0; i < ProductImageConstructor.allImages.length; i++){
+    var listItemNode = document.createElement('li');
+    listItemNode.textContent = `${ProductImageConstructor.allImages[i].productName} was selected: ${ProductImageConstructor.allImages[i].totalVotes} out of ${ProductImageConstructor.allImages[i].timesShown}.`;
+    orderedListNode.appendChild(listItemNode);
   }
-} 
+}
 
 function imageVoteTracker(event){
   var targetID = event.target.id;
@@ -101,7 +102,11 @@ function imageVoteTracker(event){
     alert('Please click on a specific image.');
   }
   totalImageRoundsSeenCurrent++;
-  randomImageDisplayer();
+  if(totalImageRoundsSeenCurrent < totalImageRoundsSeenFinish){
+    randomImageDisplayer();
+  } else {
+    finishImageSelection();
+  }
 }
 
 for(var i = 0; i < testingImagesArray.length; i++){
@@ -130,7 +135,6 @@ for(var i = 0; i < testingImagesArray.length; i++){
 // new ImageConstructor ('bob', 'image');
 // new ImageConstructor ('jane', 'image2');
 // console.log(ImageConstructor.allImages);
-randomImagePicker();
 randomImageDisplayer();
 imageAreaTag.addEventListener('click', imageVoteTracker, false);
 
