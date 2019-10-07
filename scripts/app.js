@@ -112,29 +112,7 @@ function imageVoteTracker(event){
 for(var i = 0; i < testingImagesArray.length; i++){
   new ProductImageConstructor(testingImagesArray[i][0],testingImagesArray[i][1]);
 }
-// function renderNewImages(leftIndex, rightIndex){
-//   leftImageTag.src = ProductImageConstructor.allImages[leftIndex][1];
-//   rightImageTag.src = ProductImageConstructor.allImages[rightIndex][1];
-// }
-// function imageClickEventListener(){
-//   console.log('I am living');
-//   if (totalImagesSeenInitial < 10){
-//     var thingWeClickedOn = event.target;
-//     var id = thingWeClickedOn.id;
-//     if (id === leftImageTag.id){
-//       leftImgOnThePage.clicks ++;
-//     } else if (id === rightImageTag.id){
-//       rightImgOnThePage.clicks ++;
-//     }
-//     renderNewImages();
-//   }
-//   totalImagesSeenInitial += 2;
-// }
 
-
-// new ImageConstructor ('bob', 'image');
-// new ImageConstructor ('jane', 'image2');
-// console.log(ImageConstructor.allImages);
 randomImageDisplayer();
 imageAreaTag.addEventListener('click', imageVoteTracker, false);
 
