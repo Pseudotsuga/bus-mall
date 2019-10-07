@@ -22,8 +22,8 @@ var testingImagesArray = [
   ['watering can', './img/water-can.jpg'],
   ['wine glass', './img/wine-glass.jpg']
 ];
-// var currentImagesDisplayed = [];
-// var totalImagesSeenInitial = 0;
+var totalImageRoundsSeenCurrent = 1;
+var totalImageRoundsSeenFinish = 25;
 var imageAreaTag = document.getElementById('imageArea');
 var leftImageTag = document.getElementById('leftImage');
 var middleImageTag = document.getElementById('middleImage');
@@ -37,7 +37,7 @@ function ProductImageConstructor(productName, productImageFilePath){
   this.productName = productName;
   this.productImageFilePath = productImageFilePath;
   this.totalVotes = 0;
-  //   this.timesShown = 0;
+  this.timesShown = 0;
 
   ProductImageConstructor.allImages.push(this);
 }
@@ -68,6 +68,27 @@ function randomImageDisplayer(){
   rightImageTag.src = ProductImageConstructor.allImages[rightIndexCurrent].productImageFilePath;
 }
 
+function finishImageSelectionCheck(){
+  if (totalImageRoundsSeenCurrent === totalImageRoundsSeenFinish){
+    leftImageTag.remove();
+    middleImageTag.remove();
+    rightImageTag.remove();
+    
+    var orderedListNode = document.createElement('ol');
+    imageAreaTag.appendChild(orderedListNode);
+
+    for(var i = 0; i < ProductImageConstructor.allImages.length; i++){
+      var listItemNode = document.createElement('li');
+      listItemNode.textContent = `${ProductImageConstructor.allImages[i][0]} was selected:`
+      orderedListNode.appendChild(listItemNode);
+
+      var tableHeadingNode = document.createElement('th');
+      tableHeadingNode.setAttribute('scope', 'row');
+      tableHeadingNode.textContent(`${ProductImageConstructor.allImages[i].productName}`);
+    }
+  }
+} 
+
 function imageVoteTracker(event){
   var targetID = event.target.id;
   if (targetID === leftImageTag.id){
@@ -79,6 +100,7 @@ function imageVoteTracker(event){
   } else {
     alert('Please click on a specific image.');
   }
+  totalImageRoundsSeenCurrent++;
   randomImageDisplayer();
 }
 
