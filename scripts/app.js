@@ -1,6 +1,28 @@
 'use strict';
 
-// var imagesArray = [];
+var testingImagesArray = [
+  ['bag', './img/bag.jpg'],
+  ['banana', './img/banana.jpg'],
+  ['bathroom', './img/bathroom.jpg'],
+  ['boots', './img/boots.jpg'],
+  ['breakfast', './img/breakfast.jpg'],
+  ['bubblegum', './img/bubblegum.jpg'],
+  ['chair', './img/chair.jpg'],
+  ['cthulhu', './img/cthulhu.jpg'],
+  ['dog-duck', './img/dog-duck.jpg'],
+  ['dragon', './img/dragon.jpg'],
+  ['pen', './img/pen.jpg'],
+  ['pet-sweep', './img/pet-sweep.jpg'],
+  ['scissors', './img/scissors.jpg'],
+  ['shark', './img/shark.jpg'],
+  ['sweep', './img/sweep.png'],
+  ['tauntaun', './img/tauntaun.jpg'],
+  ['unicorn', './img/unicorn.jpg'],
+  ['usb', './img/usb.gif'],
+  ['watering can', './img/water-can.jpg'],
+  ['wine glass', './img/wine-glass.jpg']
+
+];
 // var currentImagesDisplayed = [];
 // var totalImagesSeenInitial = 0;
 var imageAreaTag = document.getElementById('imageArea');
@@ -21,7 +43,6 @@ function ProductImageConstructor(productName, productImageFilePath){
 }
 
 function randomImagePicker(){
-  debugger;
   var max = ProductImageConstructor.allImages.length;
   var leftIndexRandom = Math.floor(Math.random() * max);
   while(leftIndexRandom === leftIndexCurrent || leftIndexRandom === middleIndexCurrent || leftIndexRandom === rightIndexCurrent){
@@ -38,13 +59,18 @@ function randomImagePicker(){
     rightIndexRandom = Math.floor(Math.random() * max);
   }
   rightIndexCurrent = rightIndexRandom;
-  console.log(leftIndexCurrent, middleIndexCurrent, rightIndexCurrent);
 }
-new ProductImageConstructor('whatever', 'hello1');
-new ProductImageConstructor('whatever', 'hello2');
-new ProductImageConstructor('whatever', 'hello3');
-new ProductImageConstructor('whatever', 'hello4');
 
+function randomImageDisplayer(){
+  randomImagePicker();
+  leftImageTag.src = ProductImageConstructor.allImages[leftIndexCurrent].productImageFilePath;
+  middleImageTag.src = ProductImageConstructor.allImages[middleIndexCurrent].productImageFilePath;
+  rightImageTag.src = ProductImageConstructor.allImages[rightIndexCurrent].productImageFilePath;
+}
+
+for(var i = 0; i < testingImagesArray.length; i++){
+  new ProductImageConstructor(testingImagesArray[i][0],testingImagesArray[i][1]);
+}
 // function renderNewImages(leftIndex, rightIndex){
 //   leftImageTag.src = ProductImageConstructor.allImages[leftIndex][1];
 //   rightImageTag.src = ProductImageConstructor.allImages[rightIndex][1];
@@ -69,5 +95,5 @@ new ProductImageConstructor('whatever', 'hello4');
 // new ImageConstructor ('jane', 'image2');
 // console.log(ImageConstructor.allImages);
 
-imageAreaTag.addEventListener('click', randomImagePicker, false);
+imageAreaTag.addEventListener('click', randomImageDisplayer, false);
 
