@@ -147,12 +147,12 @@ function myChart() { new Chart(myChartNode, {
     labels: labelGenerator(ProductImageConstructor.allImages),
     datasets: [{
       label: 'Total Votes',
+      backgroundColor: 'rgba(255,0,0,1)',
       data: voteDataGenerator(ProductImageConstructor.allImages),
-      backgroundColor: ['rgba(255,0,0,1)'],
     },
     { label: 'Times Shown',
+      backgroundColor: 'rgba(0,255,0,1)',
       data: timesShownDataGenerator(ProductImageConstructor.allImages),
-      backgroundColor: ['rgba(0,255,0,1)'],
     }],
   },
 }
