@@ -1,5 +1,5 @@
 'use strict';
-
+//Global Variables
 var testingImagesArray = [
   ['bag', './img/bag.jpg'],
   ['banana', './img/banana.jpg'],
@@ -23,7 +23,7 @@ var testingImagesArray = [
   ['wine glass', './img/wine-glass.jpg']
 ];
 var totalImageRoundsSeenCurrent = 0;
-var totalImageRoundsSeenFinish = 5;
+var totalImageRoundsSeenFinish = 25;
 var imageAreaTag = document.getElementById('imageArea');
 var leftImageTag = document.getElementById('leftImage');
 var middleImageTag = document.getElementById('middleImage');
@@ -34,6 +34,7 @@ var middleIndexCurrent = null;
 var rightIndexCurrent = null;
 ProductImageConstructor.allImages = [];
 
+//Function Expressions
 function ProductImageConstructor(productName, productImageFilePath){
   this.productName = productName;
   this.productImageFilePath = productImageFilePath;
@@ -85,7 +86,7 @@ function finishImageSelection(){
     listItemNode.textContent = `${ProductImageConstructor.allImages[i].productName} was selected: ${ProductImageConstructor.allImages[i].totalVotes} out of ${ProductImageConstructor.allImages[i].timesShown} times.`;
     orderedListNode.appendChild(listItemNode);
   }
-  myChart();
+  myBarChart();
 }
 
 function imageVoteTracker(event){
@@ -136,12 +137,7 @@ function instantiator(){
   }
 }
 
-instantiator();
-randomImageDisplayer();
-imageAreaTag.addEventListener('click', imageVoteTracker, false);
-
-
-function myChart() { new Chart(myChartNode, {
+function myBarChart() { new Chart(myChartNode, {
   type: 'bar',
   data: {
     labels: labelGenerator(ProductImageConstructor.allImages),
@@ -158,3 +154,8 @@ function myChart() { new Chart(myChartNode, {
 }
 );
 }
+
+//Initalize Application
+instantiator();
+randomImageDisplayer();
+imageAreaTag.addEventListener('click', imageVoteTracker, false);
