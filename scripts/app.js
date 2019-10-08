@@ -1,5 +1,5 @@
 'use strict';
-
+//Global Variables
 var testingImagesArray = [
   ['bag', './img/bag.jpg'],
   ['banana', './img/banana.jpg'],
@@ -23,16 +23,18 @@ var testingImagesArray = [
   ['wine glass', './img/wine-glass.jpg']
 ];
 var totalImageRoundsSeenCurrent = 0;
-var totalImageRoundsSeenFinish = 5;
+var totalImageRoundsSeenFinish = 25;
 var imageAreaTag = document.getElementById('imageArea');
 var leftImageTag = document.getElementById('leftImage');
 var middleImageTag = document.getElementById('middleImage');
 var rightImageTag = document.getElementById('rightImage');
+var myChartNode = document.getElementById('myChart').getContext('2d');
 var leftIndexCurrent = null;
 var middleIndexCurrent = null;
 var rightIndexCurrent = null;
 ProductImageConstructor.allImages = [];
 
+//Function Expressions
 function ProductImageConstructor(productName, productImageFilePath){
   this.productName = productName;
   this.productImageFilePath = productImageFilePath;
@@ -76,18 +78,15 @@ function randomImageDisplayer(){
 
 function finishImageSelection(){
   imageAreaTag.removeEventListener('click', imageVoteTracker);
-  leftImageTag.remove();
-  middleImageTag.remove();
-  rightImageTag.remove();
-
   var orderedListNode = document.createElement('ol');
   imageAreaTag.appendChild(orderedListNode);
 
   for(var i = 0; i < ProductImageConstructor.allImages.length; i++){
     var listItemNode = document.createElement('li');
-    listItemNode.textContent = `${ProductImageConstructor.allImages[i].productName} was selected: ${ProductImageConstructor.allImages[i].totalVotes} out of ${ProductImageConstructor.allImages[i].timesShown}.`;
+    listItemNode.textContent = `${ProductImageConstructor.allImages[i].productName} was selected: ${ProductImageConstructor.allImages[i].totalVotes} out of ${ProductImageConstructor.allImages[i].timesShown} times.`;
     orderedListNode.appendChild(listItemNode);
   }
+  myBarChart();
 }
 
 function imageVoteTracker(event){
@@ -109,10 +108,54 @@ function imageVoteTracker(event){
   }
 }
 
-for(var i = 0; i < testingImagesArray.length; i++){
-  new ProductImageConstructor(testingImagesArray[i][0],testingImagesArray[i][1]);
+function labelGenerator(sourceArray){
+  var labelArray = [];
+  for (var i = 0; i < sourceArray.length; i++){
+    labelArray.push(sourceArray[i].productName);
+  }
+  return labelArray;
 }
 
+function voteDataGenerator(sourceArray){
+  var voteDataArray = [];
+  for (var i = 0; i < sourceArray.length; i++){
+    voteDataArray.push(sourceArray[i].totalVotes);
+  }
+  return voteDataArray;
+}
+
+function timesShownDataGenerator(sourceArray){
+  var timesShownDataArray = [];
+  for (var i = 0; i < sourceArray.length; i++){
+    timesShownDataArray.push(sourceArray[i].timesShown);
+  }
+  return timesShownDataArray;
+}
+function instantiator(){
+  for(var i = 0; i < testingImagesArray.length; i++){
+    new ProductImageConstructor(testingImagesArray[i][0],testingImagesArray[i][1]);
+  }
+}
+
+function myBarChart() { new Chart(myChartNode, {
+  type: 'bar',
+  data: {
+    labels: labelGenerator(ProductImageConstructor.allImages),
+    datasets: [{
+      label: 'Total Votes',
+      backgroundColor: 'rgba(255,0,0,1)',
+      data: voteDataGenerator(ProductImageConstructor.allImages),
+    },
+    { label: 'Times Shown',
+      backgroundColor: 'rgba(0,255,0,1)',
+      data: timesShownDataGenerator(ProductImageConstructor.allImages),
+    }],
+  },
+}
+);
+}
+
+//Initalize Application
+instantiator();
 randomImageDisplayer();
 imageAreaTag.addEventListener('click', imageVoteTracker, false);
-
