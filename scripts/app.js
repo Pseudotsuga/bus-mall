@@ -28,6 +28,7 @@ var imageAreaTag = document.getElementById('imageArea');
 var leftImageTag = document.getElementById('leftImage');
 var middleImageTag = document.getElementById('middleImage');
 var rightImageTag = document.getElementById('rightImage');
+var myChartNode = document.getElementById('myChart').getContext('2d');
 var leftIndexCurrent = null;
 var middleIndexCurrent = null;
 var rightIndexCurrent = null;
@@ -76,10 +77,6 @@ function randomImageDisplayer(){
 
 function finishImageSelection(){
   imageAreaTag.removeEventListener('click', imageVoteTracker);
-  leftImageTag.remove();
-  middleImageTag.remove();
-  rightImageTag.remove();
-
   var orderedListNode = document.createElement('ol');
   imageAreaTag.appendChild(orderedListNode);
 
@@ -88,6 +85,7 @@ function finishImageSelection(){
     listItemNode.textContent = `${ProductImageConstructor.allImages[i].productName} was selected: ${ProductImageConstructor.allImages[i].totalVotes} out of ${ProductImageConstructor.allImages[i].timesShown} times.`;
     orderedListNode.appendChild(listItemNode);
   }
+  myChart();
 }
 
 function imageVoteTracker(event){
@@ -117,7 +115,7 @@ function labelGenerator(sourceArray){
   return labelArray;
 }
 
-function dataGenerator(sourceArray){
+function voteDataGenerator(sourceArray){
   var voteDataArray = [];
   for (var i = 0; i < sourceArray.length; i++){
     voteDataArray.push(sourceArray[i].totalVotes);
@@ -125,6 +123,13 @@ function dataGenerator(sourceArray){
   return voteDataArray;
 }
 
+function timesShownDataGenerator(sourceArray){
+  var timesShownDataArray = [];
+  for (var i = 0; i < sourceArray.length; i++){
+    timesShownDataArray.push(sourceArray[i].timesShown);
+  }
+  return timesShownDataArray;
+}
 function instantiator(){
   for(var i = 0; i < testingImagesArray.length; i++){
     new ProductImageConstructor(testingImagesArray[i][0],testingImagesArray[i][1]);
@@ -135,14 +140,21 @@ instantiator();
 randomImageDisplayer();
 imageAreaTag.addEventListener('click', imageVoteTracker, false);
 
-console.log(labelGenerator(ProductImageConstructor.allImages));
-console.log(dataGenerator(ProductImageConstructor.allImages));
 
-var myChartNode = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(myChartNode, {
+function myChart() { new Chart(myChartNode, {
   type: 'bar',
   data: {
-    labels: []
-  }
-
+    labels: labelGenerator(ProductImageConstructor.allImages),
+    datasets: [{
+      label: 'Total Votes',
+      data: voteDataGenerator(ProductImageConstructor.allImages),
+      backgroundColor: ['rgba(255,0,0,1)'],
+    },
+    { label: 'Times Shown',
+      data: timesShownDataGenerator(ProductImageConstructor.allImages),
+      backgroundColor: ['rgba(0,255,0,1)'],
+    }],
+  },
+}
+);
 }
