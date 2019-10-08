@@ -1,0 +1,16 @@
+* {
+  font-family: 'Courier New', Courier, monospace;
+}
+body {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 10% 80% 10%;
+}
+main {
+  grid-column: 2 / 3;
+  grid-row: 2 /3;
+}
+img {
+  height: 200px;
+  width: 200px;
+}

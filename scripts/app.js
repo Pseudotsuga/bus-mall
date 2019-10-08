@@ -85,7 +85,7 @@ function finishImageSelection(){
 
   for(var i = 0; i < ProductImageConstructor.allImages.length; i++){
     var listItemNode = document.createElement('li');
-    listItemNode.textContent = `${ProductImageConstructor.allImages[i].productName} was selected: ${ProductImageConstructor.allImages[i].totalVotes} out of ${ProductImageConstructor.allImages[i].timesShown}.`;
+    listItemNode.textContent = `${ProductImageConstructor.allImages[i].productName} was selected: ${ProductImageConstructor.allImages[i].totalVotes} out of ${ProductImageConstructor.allImages[i].timesShown} times.`;
     orderedListNode.appendChild(listItemNode);
   }
 }
@@ -109,10 +109,40 @@ function imageVoteTracker(event){
   }
 }
 
-for(var i = 0; i < testingImagesArray.length; i++){
-  new ProductImageConstructor(testingImagesArray[i][0],testingImagesArray[i][1]);
+function labelGenerator(sourceArray){
+  var labelArray = [];
+  for (var i = 0; i < sourceArray.length; i++){
+    labelArray.push(sourceArray[i].productName);
+  }
+  return labelArray;
 }
 
+function dataGenerator(sourceArray){
+  var voteDataArray = [];
+  for (var i = 0; i < sourceArray.length; i++){
+    voteDataArray.push(sourceArray[i].totalVotes);
+  }
+  return voteDataArray;
+}
+
+function instantiator(){
+  for(var i = 0; i < testingImagesArray.length; i++){
+    new ProductImageConstructor(testingImagesArray[i][0],testingImagesArray[i][1]);
+  }
+}
+
+instantiator();
 randomImageDisplayer();
 imageAreaTag.addEventListener('click', imageVoteTracker, false);
 
+console.log(labelGenerator(ProductImageConstructor.allImages));
+console.log(dataGenerator(ProductImageConstructor.allImages));
+
+var myChartNode = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(myChartNode, {
+  type: 'bar',
+  data: {
+    labels: []
+  }
+
+}
