@@ -22,6 +22,8 @@ var testingImagesArray = [
   ['watering can', './img/water-can.jpg'],
   ['wine glass', './img/wine-glass.jpg']
 ];
+var beginTestArray = [];
+var endTestArray = [];
 var totalImageRoundsSeenCurrent = 0;
 var totalImageRoundsSeenFinish = 5;
 var imageAreaTag = document.getElementById('imageArea');
@@ -48,17 +50,43 @@ function randomIndex(){
   var max = ProductImageConstructor.allImages.length;
   return Math.floor(Math.random() * max);
 }
-
+//TODO: Change for loop to while to account for need to continuously generate random numbers until no duplicates exist.
 function randomImagePicker(){
-  for (var i = 0; i < currentImageIndexArray.length; i++){
-    var randomIndexNumber = randomIndex();
-    if (currentImageIndexArray.includes(randomIndexNumber)){
-      randomIndexNumber = randomIndex();
+  beginTestArray = currentImageIndexArray;
+  currentImageIndexArray.forEach(function(imageIndex){
+    imageIndex = randomIndex();
+    if (currentImageIndexArray.includes(imageIndex)){
+      imageIndex = randomIndex();
     } else {
-      currentImageIndexArray[i] = randomIndexNumber;
+      currentImageIndexArray.push(imageIndex);
+      currentImageIndexArray.shift();
+    }
+  });
+  endTestArray = currentImageIndexArray;
+  arrayMatchTest(beginTestArray, endTestArray);
+}
+
+function arrayMatchTest(arrayA, arrayB){
+  for (var i = 0; i < arrayA.length; i++){
+    for (var j = 0; j < arrayB.length; j++){
+      if (arrayA[i] === arrayB[j]){
+        console.log('No Match');
+      }
     }
   }
 }
+//   while(currentImageIndexArray.includes(null)){
+//     var randomIndexNumber = randomIndex();
+//     if (currentImageIndexArray.includes(randomIndexNumber)){
+//       randomIndexNumber = randomIndex();
+//       console.log(currentImageIndexArray);
+//     } else {
+//       currentImageIndexArray.push(randomIndexNumber);
+//       currentImageIndexArray.shift();
+//     }
+//     console.log(currentImageIndexArray);
+//   }
+// }
 
 function randomImageDisplayer(){
   randomImagePicker();
@@ -160,10 +188,12 @@ function localStorageSetter(){
 }
 
 function localStorageGetter(){
+  debugger;
   window.localStorage.getItem('dataState', JSON.parse());
+  console.log(window.localStorage.getItem('dataState', JSON.parse()));
 }
 //Initalize Application
 instantiator();
 randomImageDisplayer();
 imageAreaTag.addEventListener('click', imageVoteTracker, false);
-window.addEventListener('onload', localStorageGetter);
+// document.addEventListener('load', localStorageGetter);
