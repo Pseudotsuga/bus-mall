@@ -23,7 +23,7 @@ var testingImagesArray = [
   ['wine glass', './img/wine-glass.jpg']
 ];
 var totalImageRoundsSeenCurrent = 0;
-var totalImageRoundsSeenFinish = 5;
+var totalImageRoundsSeenFinish = 25;
 var imageAreaTag = document.getElementById('imageArea');
 var leftImageTag = document.getElementById('leftImage');
 var middleImageTag = document.getElementById('middleImage');
@@ -50,7 +50,6 @@ function randomIndex(){
 }
 
 function randomImagePicker(){
-  debugger;
   for (var i = 0; i < currentImageIndexArray.length; i++){
     var randomIndexNumber = randomIndex();
     if (currentImageIndexArray.includes(randomIndexNumber)){
