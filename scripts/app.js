@@ -23,7 +23,7 @@ var testingImagesArray = [
   ['wine glass', './img/wine-glass.jpg']
 ];
 var totalImageRoundsSeenCurrent = 0;
-var totalImageRoundsSeenFinish = 25;
+var totalImageRoundsSeenFinish = 5;
 var imageAreaTag = document.getElementById('imageArea');
 var leftImageTag = document.getElementById('leftImage');
 var middleImageTag = document.getElementById('middleImage');
@@ -32,7 +32,7 @@ var myChartNode = document.getElementById('myChart').getContext('2d');
 var leftIndexCurrent = null;
 var middleIndexCurrent = null;
 var rightIndexCurrent = null;
-var currentImageIndexArray = [];
+var currentImageIndexArray = Array.of(leftIndexCurrent, middleIndexCurrent, rightIndexCurrent);
 ProductImageConstructor.allImages = [];
 //Function Expressions
 function ProductImageConstructor(productName, productImageFilePath){
@@ -50,7 +50,7 @@ function randomIndex(){
 }
 
 function randomImagePicker(){
-  currentImageIndexArray = Array.of(leftIndexCurrent, middleIndexCurrent, rightIndexCurrent);
+  debugger;
   for (var i = 0; i < currentImageIndexArray.length; i++){
     var randomIndexNumber = randomIndex();
     if (currentImageIndexArray.includes(randomIndexNumber)){
@@ -59,6 +59,7 @@ function randomImagePicker(){
       currentImageIndexArray[i] = randomIndexNumber;
     }
   }
+  console.log(currentImageIndexArray);  
 }
 
 function randomImageDisplayer(){
@@ -157,6 +158,6 @@ function barChart() {
 
 //Initalize Application
 instantiator();
-console.log(randomIndex());
+console.log(Math.floor(0));
 randomImageDisplayer();
 imageAreaTag.addEventListener('click', imageVoteTracker, false);
