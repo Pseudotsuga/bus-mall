@@ -58,7 +58,6 @@ function randomImagePicker(){
       currentImageIndexArray[i] = randomIndexNumber;
     }
   }
-  console.log(currentImageIndexArray);  
 }
 
 function randomImageDisplayer(){
@@ -157,6 +156,5 @@ function barChart() {
 
 //Initalize Application
 instantiator();
-console.log(Math.floor(0));
 randomImageDisplayer();
 imageAreaTag.addEventListener('click', imageVoteTracker, false);
