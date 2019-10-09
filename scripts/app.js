@@ -23,7 +23,7 @@ var testingImagesArray = [
   ['wine glass', './img/wine-glass.jpg']
 ];
 var totalImageRoundsSeenCurrent = 0;
-var totalImageRoundsSeenFinish = 25;
+var totalImageRoundsSeenFinish = 5;
 var imageAreaTag = document.getElementById('imageArea');
 var leftImageTag = document.getElementById('leftImage');
 var middleImageTag = document.getElementById('middleImage');
@@ -103,6 +103,7 @@ function imageVoteTracker(event){
   } else {
     finishImageSelection();
   }
+  localStorageSetter();
 }
 
 function labelGenerator(sourceArray){
@@ -154,7 +155,15 @@ function barChart() {
   );
 }
 
+function localStorageSetter(){
+  window.localStorage.setItem('dataState',JSON.stringify(ProductImageConstructor.allImages));
+}
+
+function localStorageGetter(){
+  window.localStorage.getItem('dataState', JSON.parse());
+}
 //Initalize Application
 instantiator();
 randomImageDisplayer();
 imageAreaTag.addEventListener('click', imageVoteTracker, false);
+window.addEventListener('onload', localStorageGetter);
