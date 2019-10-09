@@ -32,8 +32,8 @@ var myChartNode = document.getElementById('myChart').getContext('2d');
 var leftIndexCurrent = null;
 var middleIndexCurrent = null;
 var rightIndexCurrent = null;
+var currentImageIndexArray = Array.of(leftIndexCurrent, middleIndexCurrent, rightIndexCurrent);
 ProductImageConstructor.allImages = [];
-
 //Function Expressions
 function ProductImageConstructor(productName, productImageFilePath){
   this.productName = productName;
@@ -44,35 +44,32 @@ function ProductImageConstructor(productName, productImageFilePath){
   ProductImageConstructor.allImages.push(this);
 }
 
-function randomImagePicker(){
+function randomIndex(){
   var max = ProductImageConstructor.allImages.length;
-  var leftIndexRandom = Math.floor(Math.random() * max);
-  while(leftIndexRandom === leftIndexCurrent || leftIndexRandom === middleIndexCurrent || leftIndexRandom === rightIndexCurrent){
-    leftIndexRandom = Math.floor(Math.random() * max);
+  return Math.floor(Math.random() * max);
+}
+
+function randomImagePicker(){
+  for (var i = 0; i < currentImageIndexArray.length; i++){
+    var randomIndexNumber = randomIndex();
+    if (currentImageIndexArray.includes(randomIndexNumber)){
+      randomIndexNumber = randomIndex();
+    } else {
+      currentImageIndexArray[i] = randomIndexNumber;
+    }
   }
-  leftIndexCurrent = leftIndexRandom;
-  var middleIndexRandom =  Math.floor(Math.random() * max);
-  while (middleIndexRandom === middleIndexCurrent || middleIndexRandom === leftIndexCurrent || middleIndexRandom === rightIndexCurrent){
-    middleIndexRandom = Math.floor(Math.random() * max);
-  }
-  middleIndexCurrent = middleIndexRandom;
-  var rightIndexRandom = Math.floor(Math.random() * max);
-  while (rightIndexRandom === rightIndexCurrent || rightIndexRandom === middleIndexCurrent || rightIndexRandom === leftIndexCurrent){
-    rightIndexRandom = Math.floor(Math.random() * max);
-  }
-  rightIndexCurrent = rightIndexRandom;
 }
 
 function randomImageDisplayer(){
   randomImagePicker();
-  leftImageTag.src = ProductImageConstructor.allImages[leftIndexCurrent].productImageFilePath;
-  ProductImageConstructor.allImages[leftIndexCurrent].timesShown++;
+  leftImageTag.src = ProductImageConstructor.allImages[currentImageIndexArray[0]].productImageFilePath;
+  ProductImageConstructor.allImages[currentImageIndexArray[0]].timesShown++;
 
-  middleImageTag.src = ProductImageConstructor.allImages[middleIndexCurrent].productImageFilePath;
-  ProductImageConstructor.allImages[middleIndexCurrent].timesShown++;
+  middleImageTag.src = ProductImageConstructor.allImages[currentImageIndexArray[1]].productImageFilePath;
+  ProductImageConstructor.allImages[currentImageIndexArray[1]].timesShown++;
 
-  rightImageTag.src = ProductImageConstructor.allImages[rightIndexCurrent].productImageFilePath;
-  ProductImageConstructor.allImages[rightIndexCurrent].timesShown++;
+  rightImageTag.src = ProductImageConstructor.allImages[currentImageIndexArray[2]].productImageFilePath;
+  ProductImageConstructor.allImages[currentImageIndexArray[2]].timesShown++;
 
 }
 
@@ -86,17 +83,17 @@ function finishImageSelection(){
     listItemNode.textContent = `${ProductImageConstructor.allImages[i].productName} was selected: ${ProductImageConstructor.allImages[i].totalVotes} out of ${ProductImageConstructor.allImages[i].timesShown} times.`;
     orderedListNode.appendChild(listItemNode);
   }
-  myBarChart();
+  barChart();
 }
 
 function imageVoteTracker(event){
   var targetID = event.target.id;
   if (targetID === leftImageTag.id){
-    ProductImageConstructor.allImages[leftIndexCurrent].totalVotes++;
+    ProductImageConstructor.allImages[currentImageIndexArray[0]].totalVotes++;
   } else if (targetID === middleImageTag.id){
-    ProductImageConstructor.allImages[middleIndexCurrent].totalVotes++;
+    ProductImageConstructor.allImages[currentImageIndexArray[1]].totalVotes++;
   } else if (targetID === rightImageTag.id){
-    ProductImageConstructor.allImages[rightIndexCurrent].totalVotes++;
+    ProductImageConstructor.allImages[currentImageIndexArray[2]].totalVotes++;
   } else {
     alert('Please click on a specific image.');
   }
@@ -131,28 +128,30 @@ function timesShownDataGenerator(sourceArray){
   }
   return timesShownDataArray;
 }
+
 function instantiator(){
   for(var i = 0; i < testingImagesArray.length; i++){
     new ProductImageConstructor(testingImagesArray[i][0],testingImagesArray[i][1]);
   }
 }
 
-function myBarChart() { new Chart(myChartNode, {
-  type: 'bar',
-  data: {
-    labels: labelGenerator(ProductImageConstructor.allImages),
-    datasets: [{
-      label: 'Total Votes',
-      backgroundColor: 'rgba(255,0,0,1)',
-      data: voteDataGenerator(ProductImageConstructor.allImages),
+function barChart() {
+  new Chart(myChartNode, {
+    type: 'bar',
+    data: {
+      labels: labelGenerator(ProductImageConstructor.allImages),
+      datasets: [{
+        label: 'Total Votes',
+        backgroundColor: 'rgba(255,0,0,1)',
+        data: voteDataGenerator(ProductImageConstructor.allImages),
+      },
+      { label: 'Times Shown',
+        backgroundColor: 'rgba(0,255,0,1)',
+        data: timesShownDataGenerator(ProductImageConstructor.allImages),
+      }],
     },
-    { label: 'Times Shown',
-      backgroundColor: 'rgba(0,255,0,1)',
-      data: timesShownDataGenerator(ProductImageConstructor.allImages),
-    }],
-  },
-}
-);
+  }
+  );
 }
 
 //Initalize Application
