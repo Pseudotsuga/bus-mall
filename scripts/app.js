@@ -58,29 +58,8 @@ function randomImagePicker(){
     } else {
       currentImageIndexArray[i] = randomIndexNumber;
     }
-    console.log(currentImageIndexArray);
   }
 }
-
-// function randomImagePicker(){
-//   var max = ProductImageConstructor.allImages.length;
-//   var leftIndexRandom = Math.floor(Math.random() * max);
-//   while(leftIndexRandom === leftIndexCurrent || leftIndexRandom === middleIndexCurrent || leftIndexRandom === rightIndexCurrent){
-//     leftIndexRandom = Math.floor(Math.random() * max);
-//   }
-//   leftIndexCurrent = leftIndexRandom;
-//   var middleIndexRandom =  Math.floor(Math.random() * max);
-//   while (middleIndexRandom === middleIndexCurrent || middleIndexRandom === leftIndexCurrent || middleIndexRandom === rightIndexCurrent){
-//     middleIndexRandom = Math.floor(Math.random() * max);
-//   }
-//   middleIndexCurrent = middleIndexRandom;
-//   var rightIndexRandom = Math.floor(Math.random() * max);
-//   while (rightIndexRandom === rightIndexCurrent || rightIndexRandom === middleIndexCurrent || rightIndexRandom === leftIndexCurrent){
-//     rightIndexRandom = Math.floor(Math.random() * max);
-//   }
-//   rightIndexCurrent = rightIndexRandom;
-//   console.log(leftIndexCurrent, middleIndexCurrent, rightIndexCurrent);
-// }
 
 function randomImageDisplayer(){
   randomImagePicker();
@@ -111,11 +90,11 @@ function finishImageSelection(){
 function imageVoteTracker(event){
   var targetID = event.target.id;
   if (targetID === leftImageTag.id){
-    ProductImageConstructor.allImages[leftIndexCurrent].totalVotes++;
+    ProductImageConstructor.allImages[currentImageIndexArray[0]].totalVotes++;
   } else if (targetID === middleImageTag.id){
-    ProductImageConstructor.allImages[middleIndexCurrent].totalVotes++;
+    ProductImageConstructor.allImages[currentImageIndexArray[1]].totalVotes++;
   } else if (targetID === rightImageTag.id){
-    ProductImageConstructor.allImages[rightIndexCurrent].totalVotes++;
+    ProductImageConstructor.allImages[currentImageIndexArray[2]].totalVotes++;
   } else {
     alert('Please click on a specific image.');
   }
