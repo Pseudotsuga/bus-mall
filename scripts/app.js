@@ -1,5 +1,6 @@
 'use strict';
 //Global Variables
+//Provided Data
 var testingImagesArray = [
   ['bag', './img/bag.jpg'],
   ['banana', './img/banana.jpg'],
@@ -22,18 +23,22 @@ var testingImagesArray = [
   ['watering can', './img/water-can.jpg'],
   ['wine glass', './img/wine-glass.jpg']
 ];
+//Magic Numbers
 var totalImageRoundsSeenCurrent = 0;
-var totalImageRoundsSeenFinish = 25;
+var totalImageRoundsSeenFinish = 10;
+var numberOfImages = 3;
+//Referential Variables
 var imageAreaTag = document.getElementById('imageArea');
 var leftImageTag = document.getElementById('leftImage');
 var middleImageTag = document.getElementById('middleImage');
 var rightImageTag = document.getElementById('rightImage');
 var myChartNode = document.getElementById('myChart').getContext('2d');
-var leftIndexCurrent = null;
-var middleIndexCurrent = null;
-var rightIndexCurrent = null;
-var currentImageIndexArray = Array.of(leftIndexCurrent, middleIndexCurrent, rightIndexCurrent);
+//Array Associated Variables
+var formerIterationArray = [];
+var currentImageIndexArray = [null, null, null];
 ProductImageConstructor.allImages = [];
+var foundIndexValue = null;
+
 //Function Expressions
 function ProductImageConstructor(productName, productImageFilePath){
   this.productName = productName;
@@ -46,22 +51,58 @@ function ProductImageConstructor(productName, productImageFilePath){
 
 function randomIndex(){
   var max = ProductImageConstructor.allImages.length;
-  return Math.floor(Math.random() * max);
+  return Math.floor(Math.random() * max + 1);
+}
+
+function arrayReset () {
+  formerIterationArray = Array.of(currentImageIndexArray);
+  console.log('inside reset', formerIterationArray);
+  currentImageIndexArray.forEach(function(imageIndex){
+    imageIndex = null;
+  });
 }
 
 function randomImagePicker(){
-  for (var i = 0; i < currentImageIndexArray.length; i++){
-    var randomIndexNumber = randomIndex();
-    if (currentImageIndexArray.includes(randomIndexNumber)){
-      randomIndexNumber = randomIndex();
+  arrayReset();
+  console.log('inside picker', currentImageIndexArray);
+  console.log('inside picker', formerIterationArray);
+
+  for (var i = 0; i < numberOfImages; i++){
+    var randomIndexVariable = randomIndex();
+    console.log('index value', randomIndexVariable);
+    if (currentImageIndexArray.includes(randomIndexVariable)){
+      randomIndexVariable = randomIndex();
     } else {
-      currentImageIndexArray[i] = randomIndexNumber;
+      currentImageIndexArray.push(randomIndexVariable);
+    }
+  }
+  while (arrayMatchTest(currentImageIndexArray, formerIterationArray)){
+    randomIndexVariable = randomIndex();
+    if(currentImageIndexArray.includes(randomIndexVariable)){
+      break;
+    } else {
+      currentImageIndexArray.splice(foundIndexValue, 1, randomIndex());
+      console.log(currentImageIndexArray);
     }
   }
 }
 
+function arrayMatchTest(currentArray, oldArray){
+  for (var i = 0; i < currentArray.length; i++){
+    for (var j = 0; j < oldArray.length; j++){
+      if (currentArray[i] === oldArray[j]){
+        foundIndexValue = i;
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+}
+
+
 function randomImageDisplayer(){
-  randomImagePicker();
+  console.log(currentImageIndexArray);
   leftImageTag.src = ProductImageConstructor.allImages[currentImageIndexArray[0]].productImageFilePath;
   ProductImageConstructor.allImages[currentImageIndexArray[0]].timesShown++;
 
@@ -70,7 +111,6 @@ function randomImageDisplayer(){
 
   rightImageTag.src = ProductImageConstructor.allImages[currentImageIndexArray[2]].productImageFilePath;
   ProductImageConstructor.allImages[currentImageIndexArray[2]].timesShown++;
-
 }
 
 function finishImageSelection(){
@@ -99,10 +139,12 @@ function imageVoteTracker(event){
   }
   totalImageRoundsSeenCurrent++;
   if(totalImageRoundsSeenCurrent < totalImageRoundsSeenFinish){
+    randomImagePicker();
     randomImageDisplayer();
   } else {
     finishImageSelection();
   }
+  localStorageSetter();
 }
 
 function labelGenerator(sourceArray){
@@ -154,7 +196,18 @@ function barChart() {
   );
 }
 
+function localStorageSetter(){
+  window.localStorage.setItem('dataState',JSON.stringify(ProductImageConstructor.allImages));
+}
+
+// function localStorageGetter(){
+//   window.localStorage.getItem('dataState', JSON.parse());
+//   console.log(window.localStorage.getItem('dataState', JSON.parse()));
+// }
+
 //Initalize Application
 instantiator();
+randomImagePicker();
 randomImageDisplayer();
 imageAreaTag.addEventListener('click', imageVoteTracker, false);
+// document.addEventListener('load', localStorageGetter);
